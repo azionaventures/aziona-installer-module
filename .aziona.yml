@@ -1,0 +1,23 @@
+version: "1"
+
+options:
+  interpolation: true
+  session_clean_before: False
+  session_clean_after: False
+
+env:
+  MODULE_REPOSITORY: ${MODULE_REPOSITORY}
+  WORKING_DIRECTORY: ${WORKING_DIRECTORY:-tmp_folder}
+
+targets:
+  install-py-module:
+    stages:
+      git-clone:
+        type: "bash"
+        module: "git clone ${MODULE_REPOSITORY} ${WORKING_DIRECTORY}"
+      install-py-module:
+        type: "bash"
+        module: "cd ${WORKING_DIRECTORY} && python setup.py install"
+      clean:
+        type: "bash"
+        module: "rm -rf ${WORKING_DIRECTORY}"
